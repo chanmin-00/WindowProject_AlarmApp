@@ -7,10 +7,12 @@
 #include "Alarm.h"
 #include "AlarmDlg.h"
 #include "afxdialogex.h"
+#include "CKeyBoardGame.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+
 
 
 // 응용 프로그램 정보에 사용되는 CAboutDlg 대화 상자입니다.
@@ -18,6 +20,7 @@
 class CAboutDlg : public CDialogEx
 {
 public:
+	
 	CAboutDlg();
 
 // 대화 상자 데이터입니다.
@@ -28,9 +31,12 @@ public:
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
+
 // 구현입니다.
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedstart();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -46,6 +52,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
+
 // CAlarmDlg 대화 상자
 
 
@@ -57,6 +64,7 @@ CAlarmDlg::CAlarmDlg(CWnd* pParent /*=nullptr*/)
 	, alarm_minute1(0)
 	, alarm_hour2(0)
 	, alarm_minute2(0)
+	, alarm_timer_id(0)
 	, alarm_ampm1(_T(""))
 	, alarm_ampm2(_T(""))
 {
@@ -245,29 +253,26 @@ void CAlarmDlg::OnClickedMakeAlarm1()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	// 현재 시간을 얻음
 	CTime currentTime = CTime::GetCurrentTime();
-	// 오늘의 시작 시간을 계산 (현재 날짜의 00:00:00)
-	CTime todayStart(currentTime.GetYear(), currentTime.GetMonth(), currentTime.GetDay(), 0, 0, 0);
-	// 현재 시간과 오늘의 시작 시간 간의 차이 계산
-	CTimeSpan elapsedTime = currentTime - todayStart;
-	// 차이를 초로 변환
-	long secondsPassedToday = elapsedTime.GetTotalSeconds(); // 하루 24시를 기준으로 몇 초가 흘렀는지 계산
+	CTime todayStart(currentTime.GetYear(), currentTime.GetMonth(), currentTime.GetDay(), 0, 0, 0); // 오늘의 시작 시간을 계산 (현재 날짜의 00:00:00)
+	CTimeSpan elapsedTime = currentTime - todayStart; // 현재 시간과 오늘의 시작 시간 간의 차이 계산
+	long secondsPassedToday = elapsedTime.GetTotalSeconds(); //차이를 초로 변환,하루 24시를 기준으로 몇 초가 흘렀는지 계산
 	
-	alarm_type = 1;
+	alarm_type = 1; // 1번째 알람 설정에 대한 flag 
 	UpdateData(TRUE);
 	if (alarm_ampm1 == "오전" && (alarm_hour1 > 11 || alarm_hour1 < 0)) { // 오전으로 설정된 입력란에 정확한 값이 들어왔는지 확인
-		AfxMessageBox(_T("잘못된 값을 입력하였습니다."), MB_OK | MB_ICONWARNING);
+		AfxMessageBox(_T("잘못된 값을 입력하였습니다."), MB_OK | MB_ICONINFORMATION);
 		return;
 	}
 	else if (alarm_ampm1 == "오후" && (alarm_hour1 > 12 || alarm_hour1 < 1)) { //오후로 설정된 입력란에 정확한 값이 들어왔는지 확인
-		AfxMessageBox(_T("잘못된 값을 입력하였습니다."), MB_OK | MB_ICONWARNING);
+		AfxMessageBox(_T("잘못된 값을 입력하였습니다. 오후 hour 값은 1부터 12까지 입니다"), MB_OK | MB_ICONWARNING);
 		return;
 	}
 	if (alarm_ampm1 == "오후" && alarm_hour1 != 12) // 오후값이라면 24시 형태로 변환 필요
-		alarm_hour1 += 12;
+		alarm_hour1 += 12; // 예를 들어 오후 1시이면 13시로 변환
 	int timerDuration = alarm_hour1 * 60 * 60 + alarm_minute1 * 60 - secondsPassedToday; // 현재 시간으로부터 얼마나 지나야 알람이 울릴지 설정
 	if (timerDuration > 0)
 	{
-		SetTimer(1, timerDuration * 1000, nullptr);
+		SetTimer(1, timerDuration * 1000, nullptr); // timerDuration 초 후에 timer 설정
 		// 여기에서 추가적으로 필요한 알람 설정 코드를 작성할 수 있습니다.
 	}
 	else if (timerDuration <= 0) // 다음날에 알람이 울리도록 설정을 하는 것이므로 24시간을 더한다
@@ -275,7 +280,7 @@ void CAlarmDlg::OnClickedMakeAlarm1()
 		SetTimer(1, (timerDuration + 24 * 60 * 60) * 1000, nullptr);
 		CString NextdayMessage;
 		NextdayMessage.Format(_T("내일 %d 시 %d 분에 알람이 울립니다"), alarm_hour1, alarm_minute1);
-		AfxMessageBox(NextdayMessage, MB_OK | MB_ICONWARNING);
+		AfxMessageBox(NextdayMessage, MB_OK | MB_ICONINFORMATION);
 	}
 	UpdateData(FALSE);
 
@@ -285,13 +290,31 @@ void CAlarmDlg::OnClickedMakeAlarm1()
 void CAlarmDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-	CDialogEx::OnTimer(nIDEvent);
-	UINT buttonType= AfxMessageBox(_T("알람이 울렸습니다!"),  MB_OK | MB_ICONINFORMATION);
-	if (buttonType == IDOK) {
-		KillTimer(alarm_type);
-		AfxMessageBox(_T("알람이 종료되었습니다!"), MB_OK | MB_ICONINFORMATION);
+	if (nIDEvent == alarm_timer_id) {
+		MessageBeep(MB_ICONEXCLAMATION); // 경고음을 울리는 경우
 	}
+	else { // timer 아이디가 경고음울 울리는 타이머의 아이디가 아니라면 다른 동작을 수행
+		KillTimer(alarm_type);
+		CDialogEx::OnTimer(nIDEvent);
+		if (KeyboardGame()) { // 키보드 게임을 실행하는 함수를 호출합니다. 게임을 성공해야지만 알람이 종료됩니다
+			AfxMessageBox(_T("알람이 종료되었습니다!"), MB_OK | MB_ICONINFORMATION);
+		}
+		else {
+			AfxMessageBox(_T("알람이 울렸습니다!"), MB_OK | MB_ICONINFORMATION);
+		}
+	}
+}
+
+bool CAlarmDlg::KeyboardGame() { // 무작위 문자열을 제한 시간안에 키보드로 입력 시 true값을 리턴, 아닐 경우 false 리턴
+	
+	CKeyBoardGame game_dlg;
+	alarm_timer_id = SetTimer(1, 1000, nullptr);
+	INT_PTR nResponse = game_dlg.DoModal(); // 게임 대화상자 생성, 게임 대화상자 내 컨트롤 변수들을 가져와 게임 실행
+	if (nResponse == IDOK) {
+		KillTimer(alarm_timer_id); // 게임을 완료하면 알림음을 울리는것을 종료하기
+		return true;
+	}
+	return false;
 }
 
 
@@ -305,3 +328,5 @@ void CAlarmDlg::OnCbnSelchangeAmpm1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
+
+

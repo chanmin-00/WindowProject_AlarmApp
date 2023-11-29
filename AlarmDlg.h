@@ -40,13 +40,15 @@ public:
 	afx_msg void OnStnClickedMinutestr2();
 	afx_msg void OnClickedMakeAlarm1();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	int alarm_hour1;
-	int alarm_minute1;
-	int alarm_type;
-	int alarm_hour2;
-	int alarm_minute2;
+	afx_msg bool KeyboardGame();
+	int alarm_hour1; // 알람 설정 1의 시간 설정 변수
+	int alarm_minute1; // 알람 설정 1의 분 설정 변수
+	int alarm_type; // 몇 번째 알람에 대한 것인지 나타내는 flag 변수
+	int alarm_hour2; // 알람 설정 2의 시간 설정 변수
+	int alarm_minute2; // 알람 설정 2의 분 설정 변수
+	int alarm_timer_id; // 알람 타이머 ID
 	afx_msg void OnBnClickedMakeAlarm2();
 	afx_msg void OnCbnSelchangeAmpm1();
-	CString alarm_ampm1;
-	CString alarm_ampm2;
+	CString alarm_ampm1; // 알람 설정 1의 오전/오후 설정 변수
+	CString alarm_ampm2; // 알람 설정 2의 오전/오후 설정 변수
 };

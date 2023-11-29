@@ -7,6 +7,7 @@
 #define IDS_ABOUTBOX                    101
 #define IDD_ALARM_DIALOG                102
 #define IDR_MAINFRAME                   128
+#define CKeyBoardGameDlg                131
 #define IDC_MINUTE                      1002
 #define IDC_hour                        1003
 #define IDC_MINUTESTR                   1004
@@ -16,15 +17,23 @@
 #define IDC_MINUTESTR2                  1008
 #define IDC_MAKE_ALARM1                 1009
 #define IDC_AMPM2                       1010
+#define keyboardGameTitle               1011
 #define IDC_MAKE_ALARM2                 1011
+#define keyboardGameTime                1012
+#define keyboardinput                   1014
+#define keyboardString                  1015
+#define keyboardSec                     1016
+#define keyboardLimitSec                1018
+#define keyboardtest                    1019
+#define game_start                      1022
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        131
+#define _APS_NEXT_RESOURCE_VALUE        133
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1010
+#define _APS_NEXT_CONTROL_VALUE         1023
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
