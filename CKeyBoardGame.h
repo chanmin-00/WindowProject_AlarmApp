@@ -25,13 +25,13 @@ public:
 
 	CString keyboardResult;
 	CString TestProblem;
-	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedstart();
 	afx_msg void OnEnChangekeyboardlimitsec();
-	CString keyboard_time_limit;
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedComplete1();
+	CString keyboard_time_limit; // 에디트 컨트롤과 연결 변수
 	CTime currentTime; // 현재시간
 	CTime afterTime; // 경과시간
-	afx_msg void OnBnClickedOk();
-	int time_limit;
-	afx_msg void OnBnClickedComplete1();
+	int time_limit; // 시간 제한 설정을 위한 변수
+	
 };
