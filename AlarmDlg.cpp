@@ -270,12 +270,12 @@ void CAlarmDlg::OnClickedMakeAlarm1()
 	if (alarm_ampm1 == "오후" && alarm_hour1 != 12) // 오후값이라면 24시 형태로 변환 필요
 		alarm_hour1 += 12; // 예를 들어 오후 1시이면 13시로 변환
 	int timerDuration = alarm_hour1 * 60 * 60 + alarm_minute1 * 60 - secondsPassedToday; // 현재 시간으로부터 얼마나 지나야 알람이 울릴지 설정
-	if (timerDuration > 0)
+	if (timerDuration >= 0)
 	{
 		SetTimer(1, timerDuration * 1000, nullptr); // timerDuration 초 후에 timer 설정
 		// 여기에서 추가적으로 필요한 알람 설정 코드를 작성할 수 있습니다.
 	}
-	else if (timerDuration <= 0) // 다음날에 알람이 울리도록 설정을 하는 것이므로 24시간을 더한다
+	else if (timerDuration < 0) // 다음날에 알람이 울리도록 설정을 하는 것이므로 24시간을 더한다
 	{
 		SetTimer(1, (timerDuration + 24 * 60 * 60) * 1000, nullptr);
 		CString NextdayMessage;
@@ -297,7 +297,6 @@ void CAlarmDlg::OnTimer(UINT_PTR nIDEvent)
 		KillTimer(alarm_type);
 		CDialogEx::OnTimer(nIDEvent);
 		if (KeyboardGame()) { // 키보드 게임을 실행하는 함수를 호출합니다. 게임을 성공해야지만 알람이 종료됩니다
-			AfxMessageBox(_T("알람이 종료되었습니다!"), MB_OK | MB_ICONINFORMATION);
 		}
 		else {
 			AfxMessageBox(_T("알람이 울렸습니다!"), MB_OK | MB_ICONINFORMATION);

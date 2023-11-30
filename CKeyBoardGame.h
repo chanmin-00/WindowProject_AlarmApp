@@ -28,4 +28,10 @@ public:
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedstart();
 	afx_msg void OnEnChangekeyboardlimitsec();
+	CString keyboard_time_limit;
+	CTime currentTime; // 현재시간
+	CTime afterTime; // 경과시간
+	afx_msg void OnBnClickedOk();
+	int time_limit;
+	afx_msg void OnBnClickedComplete1();
 };

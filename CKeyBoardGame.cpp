@@ -13,10 +13,14 @@ IMPLEMENT_DYNAMIC(CKeyBoardGame, CDialogEx)
 
 CKeyBoardGame::CKeyBoardGame(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(CKeyBoardGameDlg, pParent)
-	
+
 	, keyboardResult(_T(""))
 	, TestProblem(_T(""))
-{
+	, keyboard_time_limit(_T(""))
+	, currentTime(0)
+	, afterTime(0)
+	, time_limit(0)
+{	
 
 }
 
@@ -29,30 +33,44 @@ void CKeyBoardGame::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, keyboardinput, keyboardResult);
 	DDX_Text(pDX, keyboardtest, TestProblem);
+	DDX_Text(pDX, keyboardLimitSec, keyboard_time_limit);
 }
 
 
 BEGIN_MESSAGE_MAP(CKeyBoardGame, CDialogEx)
 	ON_BN_CLICKED(game_start, &CKeyBoardGame::OnBnClickedstart)
 	ON_EN_CHANGE(keyboardLimitSec, &CKeyBoardGame::OnEnChangekeyboardlimitsec)
+	ON_BN_CLICKED(IDOK, &CKeyBoardGame::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_BUTTON1, &CKeyBoardGame::OnBnClickedComplete1)
 END_MESSAGE_MAP()
 
 
 void CKeyBoardGame::OnBnClickedstart() // 게임시작 버튼을 눌렀을 때 호출되는 함수
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	time_limit = rand() % 11 + 5; // 시간 제한 초 설정
 	CString characters = _T("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"); // 무작위 문자열을 위한 데이터
 	CString randomString;
 	int length = rand() % 51 + 20; // 문자열의 길이는 50부터 100까지 중 무작위
+	
 	UpdateData(TRUE);
+	keyboard_time_limit.Format(_T("%d"), time_limit); 
 	for (int i = 0; i < length; ++i) {
 		int index = rand() % characters.GetLength();
 		randomString += characters[index];
 	} // length 길이만큼의 무작위 문자열 생성
 	TestProblem.Format(randomString); // 에디트 컨트롤에 문자열 출력
+	
+	currentTime = CTime::GetCurrentTime(); // 게임을 시작한 현재시간을 설정
 	UpdateData(FALSE);
-
 }
+
+void CKeyBoardGame::OnBnClickedOk()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CDialogEx::OnOK();
+}
+
 
 
 void CKeyBoardGame::OnEnChangekeyboardlimitsec()
@@ -63,4 +81,25 @@ void CKeyBoardGame::OnEnChangekeyboardlimitsec()
 	// 이 알림 메시지를 보내지 않습니다.
 
 	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+
+void CKeyBoardGame::OnBnClickedComplete1()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	afterTime = CTime::GetCurrentTime();
+	CTimeSpan tmp = afterTime - currentTime;
+	UpdateData(TRUE);
+	if (0 < tmp.GetTotalSeconds() && tmp.GetTotalSeconds() < time_limit && keyboardResult.Compare(TestProblem) == 0) {
+		AfxMessageBox(_T("알람이 종료되었습니다!"), MB_OK | MB_ICONINFORMATION);
+		// 
+		CDialogEx::OnOK();
+	}
+	else {
+		AfxMessageBox(_T("게임에 실패했습니다. 다시 시도해주세요"), MB_OK | MB_ICONINFORMATION);
+		OnBnClickedstart(); // 제한시간을 맞추지 못하거나 문자열이 다르면 재호출
+	}
+	UpdateData(FALSE);
 }
