@@ -85,7 +85,7 @@ void CKeyBoardGame::OnEnChangekeyboardlimitsec()
 
 
 
-void CKeyBoardGame::OnBnClickedComplete1()
+void CKeyBoardGame::OnBnClickedComplete1() // 게임 완료 버튼을 눌렀을 때 호출되는 함수
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -93,9 +93,7 @@ void CKeyBoardGame::OnBnClickedComplete1()
 	CTimeSpan tmp = afterTime - currentTime;
 	UpdateData(TRUE);
 	if (0 < tmp.GetTotalSeconds() && tmp.GetTotalSeconds() < time_limit && keyboardResult.Compare(TestProblem) == 0) {
-		AfxMessageBox(_T("알람이 종료되었습니다!"), MB_OK | MB_ICONINFORMATION);
-		// 
-		CDialogEx::OnOK();
+		CDialogEx::OnOK(); // 제한 시간 내 그리고 알맞은 문자열을 입력하였을 시에 알람음이 울리는 것을 종료
 	}
 	else {
 		AfxMessageBox(_T("게임에 실패했습니다. 다시 시도해주세요"), MB_OK | MB_ICONINFORMATION);
