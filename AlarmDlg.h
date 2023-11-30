@@ -47,6 +47,8 @@ public:
 	int alarm_hour2; // 알람 설정 2의 시간 설정 변수
 	int alarm_minute2; // 알람 설정 2의 분 설정 변수
 	int alarm_timer_id; // 알람 타이머 ID
+	int alarm_timer_id1; // 1번 알람에 대한 타이머 id를 저장할 변수
+	int alarm_timer_id2; // 2번 알람에 대한 타이머 id를 저장할 변수
 	afx_msg void OnBnClickedMakeAlarm2();
 	afx_msg void OnCbnSelchangeAmpm1();
 	CString alarm_ampm1; // 알람 설정 1의 오전/오후 설정 변수

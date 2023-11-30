@@ -65,6 +65,8 @@ CAlarmDlg::CAlarmDlg(CWnd* pParent /*=nullptr*/)
 	, alarm_hour2(0)
 	, alarm_minute2(0)
 	, alarm_timer_id(0)
+	, alarm_timer_id1(0)
+	, alarm_timer_id2(0)	
 	, alarm_ampm1(_T(""))
 	, alarm_ampm2(_T(""))
 {
@@ -272,7 +274,7 @@ void CAlarmDlg::OnClickedMakeAlarm1() // 알람 1번을 설정했을 때 호출�
 	int timerDuration = alarm_hour1 * 60 * 60 + alarm_minute1 * 60 - secondsPassedToday; // 현재 시간으로부터 얼마나 지나야 알람이 울릴지 설정
 	if (timerDuration > 0)
 	{
-		SetTimer(1, timerDuration * 1000, nullptr); // timerDuration 초 후에 timer 설정
+		alarm_timer_id1 = SetTimer(1, timerDuration * 1000, nullptr); // timerDuration 초 후에 timer 설정
 		// 여기에서 추가적으로 필요한 알람 설정 코드를 작성할 수 있습니다.
 	}
 	else if (timerDuration <= 0) // 다음날에 알람이 울리도록 설정을 하는 것이므로 24시간을 더한다
@@ -310,7 +312,7 @@ void CAlarmDlg::OnBnClickedMakeAlarm2() // 알람 2번을 설정했을 때 호�
 	int timerDuration = alarm_hour2 * 60 * 60 + alarm_minute2 * 60 - secondsPassedToday; // 현재 시간으로부터 얼마나 지나야 알람이 울릴지 설정
 	if (timerDuration > 0)
 	{
-		SetTimer(1, timerDuration * 1000, nullptr); // timerDuration 초 후에 timer 설정
+		alarm_timer_id2 = SetTimer(1, timerDuration * 1000, nullptr); // timerDuration 초 후에 timer 설정
 		// 여기에서 추가적으로 필요한 알람 설정 코드를 작성할 수 있습니다.
 	}
 	else if (timerDuration <= 0) // 다음날에 알람이 울리도록 설정을 하는 것이므로 24시간을 더한다
@@ -343,10 +345,18 @@ void CAlarmDlg::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent == alarm_timer_id) {
 		MessageBeep(MB_ICONEXCLAMATION); // 경고음을 울리는 경우
 	}
-	else { // timer 아이디가 경고음울 울리는 타이머의 아이디가 아니라면 다른 동작을 수행
-		KillTimer(alarm_type);
+	else if (nIDEvent == alarm_timer_id1) { // timer 아이디가 경고음울 울리는 타이머의 아이디가 아니라면 다른 동작을 수행
+		KillTimer(alarm_timer_id1);
 		CDialogEx::OnTimer(nIDEvent);
 		KeyboardGame(); // 키보드 게임을 실행하는 함수를 호출합니다. 게임을 성공해야지만 알람이 종료됩니다
+		alarm_timer_id1 = 0; // 종료되면 알람 타이머 아이디 초기화
+		AfxMessageBox(_T("알람이 종료되었습니다."), MB_OK | MB_ICONINFORMATION);
+	}
+	else if (nIDEvent == alarm_timer_id2) { // timer 아이디가 경고음울 울리는 타이머의 아이디가 아니라면 다른 동작을 수행
+		KillTimer(alarm_timer_id2);
+		CDialogEx::OnTimer(nIDEvent);
+		KeyboardGame(); // 키보드 게임을 실행하는 함수를 호출합니다. 게임을 성공해야지만 알람이 종료됩니다
+		alarm_timer_id2 = 0; // 종료되면 알람 타이머 아이디 초기화
 		AfxMessageBox(_T("알람이 종료되었습니다."), MB_OK | MB_ICONINFORMATION);
 	}
 }
