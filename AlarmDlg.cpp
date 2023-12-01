@@ -8,6 +8,7 @@
 #include "AlarmDlg.h"
 #include "afxdialogex.h"
 #include "CKeyBoardGame.h"
+#include "CWeatherAndTrafficDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -328,18 +329,6 @@ void CAlarmDlg::OnBnClickedMakeAlarm2() // 알람 2번을 설정했을 때 호�
 
 }
 
-bool CAlarmDlg::KeyboardGame() { // 무작위 문자열을 제한 시간안에 키보드로 입력 시 true값을 리턴, 아닐 경우 false 리턴
-
-	CKeyBoardGame game_dlg;
-	alarm_timer_id = SetTimer(1, 1000, nullptr); // 알람음을 울리는 타이머 생성
-	INT_PTR nResponse = game_dlg.DoModal(); // 게임 대화상자 생성, 게임 대화상자 내 컨트롤 변수들을 가져와 게임 실행
-	if (nResponse == IDOK) {
-		KillTimer(alarm_timer_id); // 게임을 완료하면 알림음을 울리는것을 종료하기
-		alarm_timer_id = 0;
-		return true;
-	}
-	return false;
-}
 
 void CAlarmDlg::OnTimer(UINT_PTR nIDEvent)
 {
@@ -356,6 +345,7 @@ void CAlarmDlg::OnTimer(UINT_PTR nIDEvent)
 		alarm_hour1 = 0;
 		alarm_minute1 = 0;
 		UpdateData(FALSE);
+		WeatherAndTraffic(); // 게임이 종료되고 날씨와 교통 정보를 조회하는 대화상자를 호출합니다
 		AfxMessageBox(_T("알람이 종료되었습니다."), MB_OK | MB_ICONINFORMATION);
 	}
 	else if (nIDEvent == alarm_timer_id2) { // timer 아이디가 경고음울 울리는 타이머의 아이디가 아니라면 다른 동작을 수행
@@ -367,6 +357,7 @@ void CAlarmDlg::OnTimer(UINT_PTR nIDEvent)
 		alarm_hour2 = 0;
 		alarm_minute2 = 0;
 		UpdateData(FALSE);
+		WeatherAndTraffic(); // 게임이 종료되고 날씨와 교통 정보를 조회하는 대화상자를 호출합니다
 		AfxMessageBox(_T("알람이 종료되었습니다."), MB_OK | MB_ICONINFORMATION);
 	}
 }
@@ -405,6 +396,25 @@ void CAlarmDlg::OnBnClickedAlarmDelete2() // 알람 2번에 설정된 타이머�
 	else {
 		AfxMessageBox(_T("알람을 설정하지 않으셨습니다."), MB_OK | MB_ICONERROR);
 	}
+}
+
+bool CAlarmDlg::KeyboardGame() { // 키보드 게임을 위한 대화상자를 호출하는 함수
+
+	CKeyBoardGame game_dlg;
+	alarm_timer_id = SetTimer(1, 1000, nullptr); // 알람음을 울리는 타이머 생성
+	INT_PTR nResponse = game_dlg.DoModal(); // 게임 대화상자 생성, 게임 대화상자 내 컨트롤 변수들을 가져와 게임 실행
+	if (nResponse == IDOK) {
+		KillTimer(alarm_timer_id); // 게임을 완료하면 알림음을 울리는것을 종료하기
+		alarm_timer_id = 0;
+		return true;
+	}
+	return false;
+}
+
+void CAlarmDlg::WeatherAndTraffic() { // 날씨와 교통 정보를 조회할 대화상자를 호출하는 함수
+
+	CWeatherAndTrafficDlg weather_and_traffic_dlg;
+	weather_and_traffic_dlg.DoModal(); // 날씨 교통 대화상자 생성
 }
 
 

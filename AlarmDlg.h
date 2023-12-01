@@ -41,6 +41,7 @@ public:
 	afx_msg void OnClickedMakeAlarm1();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg bool KeyboardGame();
+	afx_msg void WeatherAndTraffic();
 	int alarm_hour1; // 알람 설정 1의 시간 설정 변수
 	int alarm_minute1; // 알람 설정 1의 분 설정 변수
 	int alarm_type; // 몇 번째 알람에 대한 것인지 나타내는 flag 변수
