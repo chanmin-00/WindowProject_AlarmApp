@@ -95,6 +95,8 @@ BEGIN_MESSAGE_MAP(CAlarmDlg, CDialogEx)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_MAKE_ALARM2, &CAlarmDlg::OnBnClickedMakeAlarm2)
 	ON_CBN_SELCHANGE(IDC_AMPM1, &CAlarmDlg::OnCbnSelchangeAmpm1)
+	ON_BN_CLICKED(IDC_ALARM_DELETE_1, &CAlarmDlg::OnBnClickedAlarmDelete1)
+	ON_BN_CLICKED(IDC_ALARM_DELETE_2, &CAlarmDlg::OnBnClickedAlarmDelete2)
 END_MESSAGE_MAP()
 
 
@@ -350,6 +352,10 @@ void CAlarmDlg::OnTimer(UINT_PTR nIDEvent)
 		CDialogEx::OnTimer(nIDEvent);
 		KeyboardGame(); // 키보드 게임을 실행하는 함수를 호출합니다. 게임을 성공해야지만 알람이 종료됩니다
 		alarm_timer_id1 = 0; // 종료되면 알람 타이머 아이디 초기화
+		UpdateData(TRUE); // 알람 시각 초기화
+		alarm_hour1 = 0;
+		alarm_minute1 = 0;
+		UpdateData(FALSE);
 		AfxMessageBox(_T("알람이 종료되었습니다."), MB_OK | MB_ICONINFORMATION);
 	}
 	else if (nIDEvent == alarm_timer_id2) { // timer 아이디가 경고음울 울리는 타이머의 아이디가 아니라면 다른 동작을 수행
@@ -357,10 +363,49 @@ void CAlarmDlg::OnTimer(UINT_PTR nIDEvent)
 		CDialogEx::OnTimer(nIDEvent);
 		KeyboardGame(); // 키보드 게임을 실행하는 함수를 호출합니다. 게임을 성공해야지만 알람이 종료됩니다
 		alarm_timer_id2 = 0; // 종료되면 알람 타이머 아이디 초기화
+		UpdateData(TRUE); // 알람 시각 초기화
+		alarm_hour2 = 0;
+		alarm_minute2 = 0;
+		UpdateData(FALSE);
 		AfxMessageBox(_T("알람이 종료되었습니다."), MB_OK | MB_ICONINFORMATION);
 	}
 }
 
+void CAlarmDlg::OnBnClickedAlarmDelete1() // 알람 1번에 설정된 타이머를 해지하기 위한 함수
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (alarm_timer_id1 != 0) { // 0이 아니면 알람이 설정되어 있다는 것을 의미
+		KillTimer(alarm_timer_id1);
+		alarm_timer_id1 = 0;
+		UpdateData(TRUE); // 알람 시각 초기화
+		alarm_hour1 = 0;
+		alarm_minute1 = 0;
+		UpdateData(FALSE);
+		AfxMessageBox(_T("설정한 알람이 해지되었습니다."),MB_OK | MB_ICONINFORMATION);
+	}
+	else {
+		AfxMessageBox(_T("알람을 설정하지 않으셨습니다."), MB_OK | MB_ICONERROR);
+	}
+
+}
+
+
+void CAlarmDlg::OnBnClickedAlarmDelete2() // 알람 2번에 설정된 타이머를 해지하기 위한 함수
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (alarm_timer_id2 != 0) { // 0이 아니면 알람이 설정되어 있다는 것을 의미
+		KillTimer(alarm_timer_id2);
+		alarm_timer_id2 = 0;
+		UpdateData(TRUE); // 알람 시각 초기화
+		alarm_hour2 = 0;
+		alarm_minute2 = 0;
+		UpdateData(FALSE);
+		AfxMessageBox(_T("설정한 알람이 해지되었습니다."), MB_OK | MB_ICONINFORMATION);
+	}
+	else {
+		AfxMessageBox(_T("알람을 설정하지 않으셨습니다."), MB_OK | MB_ICONERROR);
+	}
+}
 
 
 
@@ -368,5 +413,10 @@ void CAlarmDlg::OnCbnSelchangeAmpm1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
+
+
+
+
+
 
 

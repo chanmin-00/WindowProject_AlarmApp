@@ -53,4 +53,6 @@ public:
 	afx_msg void OnCbnSelchangeAmpm1();
 	CString alarm_ampm1; // 알람 설정 1의 오전/오후 설정 변수
 	CString alarm_ampm2; // 알람 설정 2의 오전/오후 설정 변수
+	afx_msg void OnBnClickedAlarmDelete1();
+	afx_msg void OnBnClickedAlarmDelete2();
 };
