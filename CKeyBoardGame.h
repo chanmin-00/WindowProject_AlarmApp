@@ -19,6 +19,7 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
+	virtual BOOL OnInitDialog();
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -33,5 +34,5 @@ public:
 	CTime currentTime; // 현재시간
 	CTime afterTime; // 경과시간
 	int time_limit; // 시간 제한 설정을 위한 변수
-	
+	CFont m_font;
 };

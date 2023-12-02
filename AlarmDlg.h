@@ -56,4 +56,5 @@ public:
 	CString alarm_ampm2; // 알람 설정 2의 오전/오후 설정 변수
 	afx_msg void OnBnClickedAlarmDelete1();
 	afx_msg void OnBnClickedAlarmDelete2();
+	CFont m_font; // 폰트 변경을 위한 객체 선언
 };
