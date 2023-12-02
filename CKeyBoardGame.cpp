@@ -28,6 +28,27 @@ CKeyBoardGame::~CKeyBoardGame()
 {
 }
 
+BOOL CKeyBoardGame::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+	// 하이퍼링크 주소에 대한 폰트를 다르게 설정합니다.
+
+	LOGFONT font_info;
+	::GetObject(GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &font_info);
+
+	font_info.lfUnderline = TRUE;
+	font_info.lfItalic = TRUE;
+	font_info.lfWeight = 600;
+	memcpy(font_info.lfFaceName, L"휴먼매직체", sizeof(L"휴먼매직체"));
+
+	m_font.CreateFontIndirectW(&font_info);
+	GetDlgItem(keyboardGameTitle)->SetFont(&m_font);
+	GetDlgItem(keyboardString)->SetFont(&m_font); 
+	GetDlgItem(keyboardtest)->SetFont(&m_font);
+
+	return TRUE;
+}
+
 void CKeyBoardGame::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);

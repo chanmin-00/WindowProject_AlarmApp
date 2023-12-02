@@ -9,6 +9,7 @@
 #define IDD_ALARM_DIALOG                102
 #define IDR_MAINFRAME                   128
 #define CKeyBoardGameDlg                131
+#define IDB_PICTURE1                    136
 #define IDC_MINUTE                      1002
 #define IDC_hour                        1003
 #define IDC_MINUTESTR                   1004
@@ -32,16 +33,16 @@
 #define IDC_ALARM_DELETE2               1025
 #define IDC_ALARM_DELETE_2              1025
 #define IDC_WEATHER                     1026
-#define IDC_WEATHER2                    1027
 #define IDC_Traffic                     1027
+#define IDC_PIC                         1027
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        135
+#define _APS_NEXT_RESOURCE_VALUE        138
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1027
+#define _APS_NEXT_CONTROL_VALUE         1028
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

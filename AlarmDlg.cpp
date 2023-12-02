@@ -9,6 +9,7 @@
 #include "afxdialogex.h"
 #include "CKeyBoardGame.h"
 #include "CWeatherAndTrafficDlg.h"
+#include "atlimage.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -107,6 +108,17 @@ BOOL CAlarmDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
+	LOGFONT font_info;
+	::GetObject(GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &font_info);
+
+	font_info.lfUnderline = TRUE;
+	font_info.lfItalic = TRUE;
+	font_info.lfWeight = 1000;
+	memcpy(font_info.lfFaceName, L"휴먼매직체", sizeof(L"휴먼매직체"));
+
+	m_font.CreateFontIndirectW(&font_info);
+	GetDlgItem(IDC_STATIC)->SetFont(&m_font);
+
 	// 시스템 메뉴에 "정보..." 메뉴 항목을 추가합니다.
 
 	// IDM_ABOUTBOX는 시스템 명령 범위에 있어야 합니다.
@@ -125,6 +137,7 @@ BOOL CAlarmDlg::OnInitDialog()
 			pSysMenu->AppendMenu(MF_SEPARATOR);
 			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
 		}
+		
 	}
 
 	// 이 대화 상자의 아이콘을 설정합니다.  응용 프로그램의 주 창이 대화 상자가 아닐 경우에는
@@ -164,8 +177,10 @@ void CAlarmDlg::OnSysCommand(UINT nID, LPARAM lParam)
 
 void CAlarmDlg::OnPaint()
 {
+	
 	if (IsIconic())
 	{
+		
 		CPaintDC dc(this); // 그리기를 위한 디바이스 컨텍스트입니다.
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
