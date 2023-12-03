@@ -31,9 +31,8 @@ CKeyBoardGame::~CKeyBoardGame()
 BOOL CKeyBoardGame::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	// 하이퍼링크 주소에 대한 폰트를 다르게 설정합니다.
 
-	LOGFONT font_info;
+	LOGFONT font_info; // 폰트를 휴먼 매직체로 변경합니다.
 	::GetObject(GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &font_info);
 
 	font_info.lfUnderline = TRUE;
@@ -46,6 +45,9 @@ BOOL CKeyBoardGame::OnInitDialog()
 	GetDlgItem(keyboardString)->SetFont(&m_font); 
 	GetDlgItem(keyboardtest)->SetFont(&m_font);
 
+	// 게임을 강제 종료를 막기 위해 x 버튼을 Gray 처리합니다.
+	CMenu* p_menu = this->GetSystemMenu(FALSE);
+	p_menu->EnableMenuItem(SC_CLOSE, MF_BYCOMMAND | MF_GRAYED);
 	return TRUE;
 }
 
