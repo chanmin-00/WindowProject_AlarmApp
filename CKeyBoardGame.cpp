@@ -70,9 +70,9 @@ void CKeyBoardGame::OnBnClickedstart() // 게임시작 버튼을 눌렀을 때 �
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	time_limit = rand() % 11 + 5; // 시간 제한 초 설정
-	CString characters = _T("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"); // 무작위 문자열을 위한 데이터
+	CString characters = _T("가나다라마바사아자차카타파하"); // 무작위 문자열을 위한 데이터
 	CString randomString;
-	int length = rand() % 11 + 30; // 문자열의 길이는 10부터 40까지 중 무작위
+	int length = rand() % 21 + 10; // 문자열의 길이는 20부터 30까지 중 무작위
 	
 	UpdateData(TRUE);
 	keyboard_time_limit.Format(_T("%d"), time_limit); 
