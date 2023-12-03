@@ -85,6 +85,7 @@ void CAlarmDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_MINUTE2, alarm_minute2);
 	DDX_CBString(pDX, IDC_AMPM1, alarm_ampm1);
 	DDX_CBString(pDX, IDC_AMPM2, alarm_ampm2);
+	DDX_Control(pDX, IDC_MONTHCALENDAR1, m_monthCalendar);
 }
 
 BEGIN_MESSAGE_MAP(CAlarmDlg, CDialogEx)
@@ -99,6 +100,7 @@ BEGIN_MESSAGE_MAP(CAlarmDlg, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_AMPM1, &CAlarmDlg::OnCbnSelchangeAmpm1)
 	ON_BN_CLICKED(IDC_ALARM_DELETE_1, &CAlarmDlg::OnBnClickedAlarmDelete1)
 	ON_BN_CLICKED(IDC_ALARM_DELETE_2, &CAlarmDlg::OnBnClickedAlarmDelete2)
+	ON_NOTIFY(MCN_SELCHANGE, IDC_MONTHCALENDAR1, &CAlarmDlg::OnMcnSelchangeMonthcalendar)
 END_MESSAGE_MAP()
 
 
@@ -440,8 +442,28 @@ void CAlarmDlg::OnCbnSelchangeAmpm1()
 }
 
 
-
-
-
-
-
+void CAlarmDlg::OnMcnSelchangeMonthcalendar(NMHDR* pNMHDR, LRESULT* pResult) // 달력을 선택할 때 날짜 차이를 계산해주는 함수입니다
+{
+	LPNMSELCHANGE pSelChange = reinterpret_cast<LPNMSELCHANGE>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	
+	CTime currentTime = CTime::GetCurrentTime();
+	if (m_monthCalendar.IsMonthView()) {
+		SYSTEMTIME selectedDate;
+		if (m_monthCalendar.GetCurSel(&selectedDate)) {
+			CTime todayTime(selectedDate);
+			CTimeSpan elapsedTime = todayTime - currentTime;
+			CString result_str;
+			if (elapsedTime > 0) {
+				result_str.Format(_T("현재로부터 %d 일 후 입니다."), elapsedTime.GetDays());
+				AfxMessageBox(result_str, MB_OK | MB_ICONINFORMATION);
+			}
+			else if (elapsedTime < 0) {
+				elapsedTime = currentTime - todayTime;
+				result_str.Format(_T("현재로부터 %d 일 전입니다."), elapsedTime.GetDays());
+				AfxMessageBox(result_str, MB_OK | MB_ICONINFORMATION);
+			}
+		}
+	}
+	*pResult = 0;
+}

@@ -57,4 +57,6 @@ public:
 	afx_msg void OnBnClickedAlarmDelete1();
 	afx_msg void OnBnClickedAlarmDelete2();
 	CFont m_font; // 폰트 변경을 위한 객체 선언
+	afx_msg void OnMcnSelchangeMonthcalendar(NMHDR* pNMHDR, LRESULT* pResult);
+	CMonthCalCtrl m_monthCalendar;
 };
