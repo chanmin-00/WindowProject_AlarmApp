@@ -72,7 +72,7 @@ void CKeyBoardGame::OnBnClickedstart() // 게임시작 버튼을 눌렀을 때 �
 	time_limit = rand() % 11 + 5; // 시간 제한 초 설정
 	CString characters = _T("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"); // 무작위 문자열을 위한 데이터
 	CString randomString;
-	int length = rand() % 51 + 20; // 문자열의 길이는 50부터 100까지 중 무작위
+	int length = rand() % 11 + 30; // 문자열의 길이는 10부터 40까지 중 무작위
 	
 	UpdateData(TRUE);
 	keyboard_time_limit.Format(_T("%d"), time_limit); 
@@ -81,6 +81,7 @@ void CKeyBoardGame::OnBnClickedstart() // 게임시작 버튼을 눌렀을 때 �
 		randomString += characters[index];
 	} // length 길이만큼의 무작위 문자열 생성
 	TestProblem.Format(randomString); // 에디트 컨트롤에 문자열 출력
+	GetDlgItem(keyboardtest)->EnableWindow(FALSE); // 문자열을 복사하는 행위를 막기 위해 에디트컨트롤 비활성화
 	
 	currentTime = CTime::GetCurrentTime(); // 게임을 시작한 현재시간을 설정
 	UpdateData(FALSE);
