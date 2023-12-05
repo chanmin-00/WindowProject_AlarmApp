@@ -4,7 +4,7 @@
 </hr> </hr>
 
 # 🕐핵심 기능🕧
-* :alarm_clock: 알람 설정 및 해지
+## :star: :alarm_clock: 알람 설정 및 해지
 * :video_game: 타자 게임
 * :calendar: 달력 조회
 * :sunny: 실시간 날씨 조회
