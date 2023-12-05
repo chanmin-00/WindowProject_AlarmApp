@@ -3,8 +3,7 @@
 윈도우 프로그래밍 토이 프로젝트 과제를  위한 AlarmApp 어플리케이션
 </hr> </hr>
 
-# :star: 핵심 기능 :star:
-## :alarm_clock: 알람 설정 및 해지
+#:star: 핵심 기능 :star:## :alarm_clock: 알람 설정 및 해지
 * 원하는 시각에 알람 설정 및 해지
 * 알람 작동 시 알림음 울림 기능
 ## :video_game: 타자 게임
